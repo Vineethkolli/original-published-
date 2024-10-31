@@ -17,7 +17,7 @@ app.use(cors());
 app.use(bodyParser.json()); // Parse JSON bodies
 
 app.use(cors({
-    origin: ["https://youth-three.vercel.app/"], // Replace with your actual frontend URL
+    origin: ["https://nbkyouth.vercel.app/"], // Replace with your actual frontend URL
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials:true
 }));
