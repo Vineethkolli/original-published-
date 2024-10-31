@@ -13,17 +13,16 @@ function ForgetPassword() {
     const [otpSent, setOtpSent] = useState(false);
     const [newPasswordVisible, setNewPasswordVisible] = useState(false);
     const [confirmNewPasswordVisible, setConfirmNewPasswordVisible] = useState(false);
-    const [otpButtonDisabled, setOtpButtonDisabled] = useState(false); // New state to disable button
+    const [otpButtonDisabled, setOtpButtonDisabled] = useState(false);
 
     const navigate = useNavigate();
 
     const handleSendOtp = async (e) => {
         e.preventDefault();
 
-        // Prevent sending OTP again if already sent
         if (otpSent || otpButtonDisabled) return;
 
-        setOtpButtonDisabled(true); // Disable the button immediately after click
+        setOtpButtonDisabled(true);
 
         try {
             await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/forget-password`, { email });
@@ -33,7 +32,7 @@ function ForgetPassword() {
         } catch (error) {
             setErrorMessage('Error sending OTP: ' + error.response?.data?.message || 'Something went wrong!');
             setMessage('');
-            setOtpButtonDisabled(false); // Re-enable button on error
+            setOtpButtonDisabled(false);
         }
     };
 
@@ -49,10 +48,9 @@ function ForgetPassword() {
             setMessage('Password reset successful! You can now login.');
             setErrorMessage('');
 
-            // Navigate to Signin page after 0.5 seconds
             setTimeout(() => {
                 navigate('/signin');
-            }, 500); // 500 milliseconds
+            }, 500);
         } catch (error) {
             setErrorMessage('Error resetting password: ' + error.response?.data?.message || 'Something went wrong!');
             setMessage('');
@@ -93,7 +91,7 @@ function ForgetPassword() {
                             required 
                         />
                         <span className="eye-icon" onClick={() => setNewPasswordVisible(!newPasswordVisible)}>
-                            {newPasswordVisible ? <FaEye /> : <FaEyeSlash />}
+                            {newPasswordVisible ? <FaEyeSlash /> : <FaEye />}
                         </span>
                     </div>
                     <div className="password-container">
@@ -105,7 +103,7 @@ function ForgetPassword() {
                             required 
                         />
                         <span className="eye-icon" onClick={() => setConfirmNewPasswordVisible(!confirmNewPasswordVisible)}>
-                            {confirmNewPasswordVisible ? <FaEye /> : <FaEyeSlash />}
+                            {confirmNewPasswordVisible ? <FaEyeSlash /> : <FaEye />}
                         </span>
                     </div>
                     <button type="submit">Reset Password</button>

@@ -1,9 +1,15 @@
+require('dotenv').config();
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
+const mailjet = require('node-mailjet');
 const User = require('../models/User');
 const router = express.Router();
+
+const mailjetClient = mailjet.apiConnect(
+    process.env.MAILJET_API_KEY, 
+    process.env.MAILJET_API_SECRET
+);
 
 // Signup
 router.post('/signup', async (req, res) => {
@@ -13,8 +19,6 @@ router.post('/signup', async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ message: 'User already exists' });
         }
-
-        // Use the provided role or default to 'user'
         const userRole = role || 'user';
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = new User({ name, email, phoneNumber, password: hashedPassword, role: userRole });
@@ -33,12 +37,9 @@ router.post('/signin', async (req, res) => {
         if (!user || !(await bcrypt.compare(password, user.password))) {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
-
-        // Ensure the role matches the one in the database
         if (user.role !== role) {
             return res.status(403).json({ message: 'Unauthorized: Role mismatch' });
         }
-
         const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.json({ token, user: { name: user.name, email: user.email, phoneNumber: user.phoneNumber, role: user.role } });
     } catch (error) {
@@ -54,28 +55,35 @@ router.post('/forget-password', async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
         user.otp = otp;
         user.otpExpiration = Date.now() + 600000; // OTP valid for 10 minutes
         await user.save();
 
-        const transporter = nodemailer.createTransport({
-            service: 'Gmail',
-            auth: {
-                user: process.env.EMAIL,
-                pass: process.env.EMAIL_PASSWORD,
-            },
+        // Sending OTP via Mailjet
+        const request = mailjetClient.post('send', { version: 'v3.1' }).request({
+            Messages: [
+                {
+                    From: {
+                        Email: process.env.MAILJET_FROM_EMAIL,
+                        Name: 'NBK Youth'
+                    },
+                    To: [
+                        {
+                            Email: email,
+                            Name: user.name || 'User'
+                        }
+                    ],
+                    Subject: 'Your OTP for Password Reset',
+                    TextPart: `Your OTP is ${otp}. It is valid for 10 minutes.`,
+                    HTMLPart: `<h3>Your OTP is <strong>${otp}</strong>.It is valid for 10 minutes.</h3>`,
+                }
+            ]
         });
-
-        await transporter.sendMail({
-            to: email,
-            subject: 'Your OTP for Password Reset',
-            text: `Your OTP is ${otp}. It is valid for 10 minutes.`,
-        });
-
+        await request; // Ensure this line completes successfully
         res.json({ message: 'OTP sent to your email' });
     } catch (error) {
+        console.error('Error in forget-password:', error); // Log the error for debugging
         res.status(500).json({ message: 'Server error' });
     }
 });
@@ -88,20 +96,18 @@ router.post('/reset-password', async (req, res) => {
         if (!user || user.otp !== otp || Date.now() > user.otpExpiration) {
             return res.status(400).json({ message: 'Invalid or expired OTP' });
         }
-
         user.password = await bcrypt.hash(newPassword, 10);
         user.otp = undefined;
         user.otpExpiration = undefined;
         await user.save();
-
         res.json({ message: 'Password reset successfully' });
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
     }
 });
 
-// In your routes file (e.g., auth.js)
-router.get('/get-users', async (req, res) => { // Ensure the route matches your request
+// Get All Users
+router.get('/get-users', async (req, res) => { 
     try {
         const users = await User.find(); // Fetch all users from the database
         res.json(users); // Send the users as a response
@@ -109,22 +115,5 @@ router.get('/get-users', async (req, res) => { // Ensure the route matches your 
         res.status(500).json({ message: 'Server error', error: err.message });
     }
 });
-
-// In routes/auth.js
-router.patch('/update-role/:id', async (req, res) => {
-    const { id } = req.params;
-    const { role } = req.body;
-
-    try {
-        const user = await User.findByIdAndUpdate(id, { role }, { new: true });
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-        res.json({ message: 'User role updated successfully', user });
-    } catch (err) {
-        res.status(500).json({ message: 'Server error', error: err.message });
-    }
-});
-
 
 module.exports = router;
