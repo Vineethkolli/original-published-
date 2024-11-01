@@ -40,6 +40,4 @@ const incomeSchema = new mongoose.Schema({
     },
 });
 
-const Income = mongoose.model('Income', incomeSchema);
-
-module.exports = Income;
+module.exports = mongoose.model('Income', incomeSchema);
