@@ -1,29 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const Income = require('../models/Income');
-const {signin} = require('../controllers/authController');
+const { createIncomeEntry, getAllIncomeEntries, searchIncomeEntries, updateIncomeEntry } = require('../controllers/incomeController');
+
 // Route to create a new income entry
-router.post('/create', async (req, res) => {
-  const { name, email, phoneNumber, amount, category, status, paymentMode, timestamp } = req.body;
+router.post('/create', createIncomeEntry);
 
-  try {
-    const newIncomeEntry = new Income({
-      name,
-      email,
-      phoneNumber,
-      amount,
-      category,
-      status,
-      paymentMode,
-      date: timestamp, // Use the timestamp provided
-    });
+// Route to get all income entries
+router.get('/', getAllIncomeEntries);
 
-    await newIncomeEntry.save();
-    res.status(201).json({ message: 'Income entry created successfully', newIncomeEntry });
-  } catch (error) {
-    console.error('Error creating income entry:', error);
-    res.status(500).json({ message: 'Error creating income entry' });
-  }
-});
+// Route to search income entries by name or phone number
+router.get('/search', searchIncomeEntries);
+
+// Route to update an income entry by ID
+router.post('/update/:id', updateIncomeEntry);
 
 module.exports = router;

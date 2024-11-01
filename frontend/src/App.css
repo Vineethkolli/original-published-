@@ -391,87 +391,156 @@ button:hover, select:hover {
 /*income */
 /* Income Entry Container */
 .income-entry-container {
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
+  max-width: 400px;
+  margin: 2rem auto; /* Centering the form container */
+  padding: 2rem;
+  background: white; /* Solid white background for contrast */
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); /* Softer shadow for depth */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Added box-shadow transition */
 }
 
-/* Form Title */
-.income-entry-container h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #333;
+.income-entry-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25); /* Darker shadow on hover */
 }
 
-/* Form Elements */
 .income-entry-form {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Stack inputs vertically */
 }
 
-/* Input Fields */
 .income-entry-form input,
 .income-entry-form select {
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
+  width: 90%;
+  padding: 0.8rem;
+  margin: 0.5rem 0; /* Spacing between inputs */
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.2s ease; /* Added shadow transition */
 }
 
-/* Input Focus */
 .income-entry-form input:focus,
 .income-entry-form select:focus {
-  border-color: #007bff;
+  border-color: #28a745;
   outline: none;
+  box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); /* Soft shadow on focus */
 }
 
-/* Buttons */
-.form-buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.form-buttons button {
-  padding: 10px 20px;
+.income-entry-form button {
+  width: 100%;
+  padding: 0.8rem;
   border: none;
-  border-radius: 4px;
-  color: #ffffff;
-  font-size: 16px;
+  background-color: #28a745; /* Green background for buttons */
+  color: white;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.form-buttons button[type="submit"] {
-  background-color: #28a745; /* Green for submit */
+.income-entry-form button:hover {
+  background-color: #218838; /* Darker green on hover */
+  transform: scale(1.02); /* Slight scaling on hover */
 }
 
-.form-buttons button[type="button"] {
-  background-color: #dc3545; /* Red for cancel */
+.error-message {
+  color: red; /* Red color for error messages */
+  font-size: 0.9rem;
+  text-align: center; /* Center align the error message */
 }
 
-.form-buttons button:hover {
-  filter: brightness(90%);
+.message {
+  text-align: center; /* Center align success/error messages */
+  font-size: 1rem; /* Consistent font size */
+  margin-top: 1rem;
 }
 
-/* Form Message */
-.form-message {
-  margin-top: 15px;
-  padding: 10px;
-  border-radius: 4px;
-  text-align: center;
+.search-container {
+  display: flex; /* Align search inputs */
+  justify-content: space-between; /* Space between inputs */
+  margin-bottom: 1rem; /* Space below search fields */
 }
 
-.form-message.success {
-  background-color: #d4edda;
-  color: #155724;
+.search-container input {
+  flex: 1; /* Allow inputs to grow */
+  margin-right: 0.5rem; /* Space between search fields */
 }
 
-.form-message.error {
-  background-color: #f8d7da;
-  color: #721c24;
+.search-results {
+  margin: 1rem 0; /* Spacing above and below search results */
+  background-color: #f9f9f9; /* Light background for contrast */
+  padding: 1rem; /* Padding inside the results container */
+  border-radius: 6px; /* Rounded corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.search-results h3 {
+  margin-bottom: 0.5rem; /* Margin below the heading */
+  font-size: 1.2rem; /* Slightly larger font size for the heading */
+}
+
+.search-results ul {
+  list-style-type: none; /* Remove bullet points */
+  padding: 0; /* Remove padding */
+}
+
+.search-results li {
+  padding: 0.5rem; /* Padding for each search result */
+  cursor: pointer; /* Change cursor to pointer */
+  transition: background-color 0.3s ease; /* Smooth background transition */
+}
+
+.search-results li:hover {
+  background-color: #e0e0e0; /* Highlight on hover */
+}
+
+/* Existing styles omitted for brevity... */
+
+/* Add this new style for the button group to display buttons side by side */
+.button-group, .form-buttons {
+  display: flex;
+  justify-content: space-between; /* Adjusts space between buttons */
+}
+
+.button-group button, .form-buttons button {
+  flex: 1; /* Makes buttons grow to fill space */
+  margin: 0 5px; /* Adds space between buttons */
+}
+
+/* For better spacing and alignment */
+.form-buttons button {
+  margin: 0 5px; /* Adds horizontal margin */
+  width: auto; /* Allow buttons to size automatically */
+}
+
+.income-entry-container {
+  padding: 1rem;
+}
+
+.search-results {
+  margin-top: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 1rem;
+}
+
+.search-results h3 {
+  margin: 0;
+}
+
+.search-results ul {
+  list-style: none;
+  padding: 0;
+}
+
+.search-results li {
+  cursor: pointer;
+  padding: 0.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.search-results li:hover {
+  background-color: #f4f4f4;
 }

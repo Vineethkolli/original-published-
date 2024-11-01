@@ -17,10 +17,7 @@ const connectDB = async () => {
 // Connection to Income Data database
 const connectIncomeDB = async () => {
     try {
-        await mongoose.createConnection(process.env.MONGO_INCOME_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
+        await mongoose.createConnection(process.env.MONGO_INCOME_URI);
         console.log('MongoDB (Income DB) connected');
     } catch (error) {
         console.error('MongoDB connection error (Income DB):', error.message);
