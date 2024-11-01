@@ -1,3 +1,4 @@
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -5,18 +6,15 @@ const dotenv = require('dotenv');
 const { connectDB, connectIncomeDB } = require('./config/db');
 const authRoutes = require('./routes/auth');
 const incomeRoutes = require('./routes/income');
-// Load environment variables from .env file
-dotenv.config();
 
-// Connect to MongoDB
-connectDB();
-connectIncomeDB();
+dotenv.config();
+connectDB();         // Connect to the default MongoDB
+connectIncomeDB();    // Connect to the Income MongoDB
 
 const app = express();
 
-// Middleware
 app.use(cors());
-app.use(bodyParser.json()); // Parse JSON bodies
+app.use(bodyParser.json());
 
 app.use(cors({
     origin: ["https://nbkyouth.vercel.app"], // Replace with your actual frontend URL
@@ -24,12 +22,11 @@ app.use(cors({
     credentials:true
 }));
 
-// API routes
+// Authentication routes
 app.use('/api/auth', authRoutes);
 
 // Income entry routes
 app.use('/api/income', incomeRoutes);
 
-// Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
