@@ -11,7 +11,7 @@ h2 {
   font-size: 2rem; /* Slightly larger for emphasis */
 }
 
-.form-container {
+.form-container { 
   max-width: 350px;
   margin: 0.5rem auto 1.5rem auto; /* Reduced top margin to bring the container up */
   padding: 2rem;
@@ -386,4 +386,92 @@ button:hover, select:hover {
 
 .edit-icon:hover {
     color: #388E3C; /* Darker green on hover */
+}
+
+/*income */
+/* Income Entry Container */
+.income-entry-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+}
+
+/* Form Title */
+.income-entry-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Form Elements */
+.income-entry-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Input Fields */
+.income-entry-form input,
+.income-entry-form select {
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+/* Input Focus */
+.income-entry-form input:focus,
+.income-entry-form select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Buttons */
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.form-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  color: #ffffff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form-buttons button[type="submit"] {
+  background-color: #28a745; /* Green for submit */
+}
+
+.form-buttons button[type="button"] {
+  background-color: #dc3545; /* Red for cancel */
+}
+
+.form-buttons button:hover {
+  filter: brightness(90%);
+}
+
+/* Form Message */
+.form-message {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.form-message.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.form-message.error {
+  background-color: #f8d7da;
+  color: #721c24;
 }

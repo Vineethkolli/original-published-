@@ -2,13 +2,15 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const connectDB = require('./config/db');
+const { connectDB, connectIncomeDB } = require('./config/db');
 const authRoutes = require('./routes/auth');
+const incomeRoutes = require('./routes/income');
 // Load environment variables from .env file
 dotenv.config();
 
 // Connect to MongoDB
 connectDB();
+connectIncomeDB();
 
 const app = express();
 
@@ -24,6 +26,9 @@ app.use(cors({
 
 // API routes
 app.use('/api/auth', authRoutes);
+
+// Income entry routes
+app.use('/api/income', incomeRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000;

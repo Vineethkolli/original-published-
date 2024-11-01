@@ -9,11 +9,13 @@ import Profile from './pages/Profile'; // Import Profile
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
+import IncomeEntry from './pages/IncomeEntry';
 import InstallApp from './pages/InstallApp';
 import UsersPage from './pages/UsersPage';
 import 'font-awesome/css/font-awesome.min.css';
 
 
+// App.jsx
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -37,16 +39,18 @@ function App() {
         <Router>
             <div className="App">
                 {isAuthenticated && <Header onToggleSidebar={toggleSidebar} />} 
-                {isAuthenticated && <Sidebar isOpen={isSidebarOpen} onClose={toggleSidebar} />} 
+                {isAuthenticated && <Sidebar isOpen={isSidebarOpen} onClose={toggleSidebar} userRole={userData?.role} />} {/* Pass user role to Sidebar */}
                 <Routes>
                     <Route path="/" element={<Signin onSignIn={handleSignIn} setUserData={setUserData} />} /> 
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/signin" element={<Signin onSignIn={handleSignIn} setUserData={setUserData} />} />
                     <Route path="/home" element={<Home onLogout={handleLogout} />} />
                     <Route path="/forget-password" element={<ForgetPassword />} />
-                    <Route path="/profile" element={<Profile user={userData} onLogout={handleLogout} />} /> {/* Profile route */}
+                    <Route path="/profile" element={<Profile user={userData} onLogout={handleLogout} />} />
+                    <Route path="/incomeentry" element={<IncomeEntry />} />
                     <Route path="/installapp" element={<InstallApp />} />
-                    <Route path="/users" element={<UsersPage />} />
+                    {/* Only allow /users route if the user has the developer role */}
+                    {userData?.role === 'developer' && <Route path="/users" element={<UsersPage />} />}
                 </Routes>
                 {isAuthenticated && <Footer />} 
             </div>
@@ -55,3 +59,4 @@ function App() {
 }
 
 export default App;
+
