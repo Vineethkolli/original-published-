@@ -389,7 +389,7 @@ button:hover, select:hover {
 }
 
 /*income */
-/* Income Entry Container */
+* Income Entry Container */
 .income-entry-container {
   max-width: 400px;
   margin: 2rem auto; /* Centering the form container */
@@ -543,4 +543,81 @@ button:hover, select:hover {
 
 .search-results li:hover {
   background-color: #f4f4f4;
+}
+
+.expenses-container {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.expenses-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+.expense-entry-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.expense-entry-form input,
+.expense-entry-form select {
+  width: 90%;
+  padding: 0.8rem;
+  margin: 0.5rem 0;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.2s ease;
+}
+
+.expense-entry-form input:focus,
+.expense-entry-form select:focus {
+  border-color: #28a745;
+  outline: none;
+  box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+}
+
+.expense-entry-form button {
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  background-color: #28a745;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.expense-entry-form button:hover {
+  background-color: #218838;
+  transform: scale(1.02);
+}
+
+.search-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.search-container input {
+  flex: 1;
+  margin-right: 0.5rem;
+}
+
+.button-group, .form-buttons {
+  display: flex;
+  justify-content: space-between;
+  
+}
+
+.button-group button, .form-buttons button {
+  flex: 1;
+  margin: 0 5px;
 }
