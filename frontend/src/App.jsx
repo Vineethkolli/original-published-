@@ -10,6 +10,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
 import IncomeEntry from './pages/IncomeEntry';
+import ExpenseEntry from './pages/ExpenseEntry';
 import InstallApp from './pages/InstallApp';
 import UsersPage from './pages/UsersPage';
 import 'font-awesome/css/font-awesome.min.css';
@@ -48,9 +49,12 @@ function App() {
                     <Route path="/forget-password" element={<ForgetPassword />} />
                     <Route path="/profile" element={<Profile user={userData} onLogout={handleLogout} />} />
                     <Route path="/incomeentry" element={<IncomeEntry />} />
+                    <Route path="/expenseentry" element={<ExpenseEntry />} />
                     <Route path="/installapp" element={<InstallApp />} />
                     {/* Only allow /users route if the user has the developer role */}
                     {userData?.role === 'developer' && <Route path="/users" element={<UsersPage />} />}
+                    {(userData?.role === 'developer' ||  userData?.role === 'developer')&&<Route path="/incomeentry" element={<IncomeEntry />} />}
+                   
                 </Routes>
                 {isAuthenticated && <Footer />} 
             </div>
