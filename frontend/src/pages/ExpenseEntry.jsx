@@ -104,6 +104,7 @@ const handleSubmit = async (e) => {
     resetForm();
   } catch (error) {
     console.error('Error submitting data:', error);
+    setMessage('All details are mandatory');
     setMessage('Server error. Please try again.');
     setMessageType('error');
   }

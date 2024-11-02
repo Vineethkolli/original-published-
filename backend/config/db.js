@@ -1,35 +1,46 @@
 const mongoose = require('mongoose');
 
-// Connection to default database
+// Connection to the auth database
 const connectDB = async () => {
     try {
         await mongoose.connect(process.env.MONGO_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            dbName: 'auth' // Specify the database name
         });
-        console.log('MongoDB connected');
+        console.log('MongoDB connected to auth database');
     } catch (error) {
-        console.error('MongoDB connection error:', error.message);
+        console.error('MongoDB connection error (auth):', error.message);
         process.exit(1);
     }
 };
 
-// Connection to Income Data database
+// Connection to the income database
 const connectIncomeDB = async () => {
     try {
-        await mongoose.createConnection(process.env.MONGO_INCOME_URI);
-        console.log('MongoDB (Income DB) connected');
+        await mongoose.createConnection(process.env.MONGO_INCOME_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            dbName: 'income' // Specify the database name
+        });
+        console.log('MongoDB connected to income database');
     } catch (error) {
-        console.error('MongoDB connection error (Income DB):', error.message);
+        console.error('MongoDB connection error (income):', error.message);
         process.exit(1);
     }
 };
 
-// Connection to Expense Data database
+// Connection to the expense database
 const connectExpenseDB = async () => {
     try {
-        await mongoose.createConnection(process.env.MONGO_EXPENSE_URI);
-        console.log('MongoDB (Expense DB) connected');
+        await mongoose.createConnection(process.env.MONGO_EXPENSE_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            dbName: 'expense' // Specify the database name
+        });
+        console.log('MongoDB connected to expense database');
     } catch (error) {
-        console.error('MongoDB connection error (Income DB):', error.message);
+        console.error('MongoDB connection error (expense):', error.message);
         process.exit(1);
     }
 };
