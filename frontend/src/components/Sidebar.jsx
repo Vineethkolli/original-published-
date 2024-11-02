@@ -16,8 +16,14 @@ function Sidebar({ isOpen, onClose, userRole }) {
                         <Link to="/users" onClick={onClose}>Users</Link>
                     </li>
                 )}
+                {/* Render the Income Entry link only for admin and developer roles */}
+                {(userRole === 'admin' || userRole === 'developer') && (
+                    <li>
+                        <Link to="/incomeentry" onClick={onClose}>Income Entry</Link>
+                    </li>
+                )}
                 <li>
-                    <Link to="/IncomeEntry" onClick={onClose}>Income Entry</Link>
+                    <Link to="/expenseentry" onClick={onClose}>Expense Entry</Link>
                 </li>
                 <li>
                     <Link to="/installapp" onClick={onClose}>Install App</Link>

@@ -1,4 +1,3 @@
-// Profile.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,10 +12,11 @@ function Profile({ user, onLogout }) {
     return (
         <div className="form-container">
             <h2>Profile</h2>
+            <p><strong>Register ID:</strong> {user.registerId}</p>
             <p><strong>Name:</strong> {user.name}</p>
             <p><strong>Email:</strong> {user.email}</p>
             <p><strong>Phone Number:</strong> {user.phoneNumber}</p>
-            <p><strong>Role:</strong> {user.role}</p> {/* Display the user role */}
+            <p><strong>Role:</strong> {user.role}</p>
             <button onClick={handleLogout}>Logout</button>
         </div>
     );

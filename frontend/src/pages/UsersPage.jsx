@@ -7,6 +7,7 @@ const UsersPage = () => {
     const [messages, setMessages] = useState({});
     const [editableUserId, setEditableUserId] = useState(null);
     const [newRole, setNewRole] = useState('');
+    const [searchQuery, setSearchQuery] = useState(''); // State for the search query
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -51,11 +52,28 @@ const UsersPage = () => {
 
     if (error) return <p>{error}</p>;
 
+    // Filter users based on the search query, including registerId
+    const filteredUsers = users.filter(user => 
+        user.registerId.includes(searchQuery) || // Check if registerId includes the search query
+        user.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        user.email.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        user.phoneNumber.includes(searchQuery)
+    );
+
     return (
         <div className="container">
+            {/* Search Bar */}
+            <input 
+                type="text" 
+                placeholder="Search by ID, name, email, or phone number" 
+                value={searchQuery} 
+                onChange={(e) => setSearchQuery(e.target.value)} 
+                style={{ marginBottom: '20px', padding: '10px', width: '90%', borderRadius: '5px' }} 
+            />
             <table>
                 <thead>
                     <tr>
+                        <th>Register ID</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Phone Number</th>
@@ -63,8 +81,9 @@ const UsersPage = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map((user) => (
+                    {filteredUsers.map((user) => (
                         <tr key={user._id}>
+                            <td>{user.registerId}</td>
                             <td>{user.name}</td>
                             <td>{user.email}</td>
                             <td>{user.phoneNumber}</td>

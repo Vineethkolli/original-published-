@@ -59,6 +59,17 @@ const IncomeEntry = () => {
     checkExists();
   }, [formData.name, isEditMode]);
 
+  // Message timeout effect
+  useEffect(() => {
+    let timeout;
+    if (message) {
+      timeout = setTimeout(() => {
+        setMessage('');
+      }, 2000);
+    }
+    return () => clearTimeout(timeout); // Cleanup on unmount or message change
+  }, [message]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -80,10 +91,17 @@ const IncomeEntry = () => {
     }
 
     try {
+      const token = localStorage.getItem('token');
       const url = isEditMode
         ? `${import.meta.env.VITE_BACKEND_URL}/api/income/update/${formData.id}`
         : `${import.meta.env.VITE_BACKEND_URL}/api/income/create`;
-      const response = await axios.post(url, formData);
+
+      const response = await axios.post(url, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       setMessage(isEditMode ? 'Income entry updated successfully!' : 'Income entry saved successfully!');
       setMessageType('success');
     } catch (error) {
@@ -91,8 +109,25 @@ const IncomeEntry = () => {
       setMessage('Server error. Please try again.');
       setMessageType('error');
     } finally {
-      setTimeout(() => setMessage(''), 3000);
       resetForm();
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/income/delete/${formData.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setMessage('Income entry deleted successfully!');
+      setMessageType('success');
+      resetForm();
+    } catch (error) {
+      console.error('Error deleting entry:', error);
+      setMessage('Failed to delete the entry. Please try again.');
+      setMessageType('error');
     }
   };
 
@@ -174,12 +209,11 @@ const IncomeEntry = () => {
             />
           </div>
 
-          {/* Displaying search results below the inputs */}
           {searchResults.length > 0 && (
             <div className="search-results">
               <h3>Search Results:</h3>
               <ul>
-                {searchResults.map(entry => (
+                {searchResults.map((entry) => (
                   <li key={entry._id} onClick={() => handleEdit(entry)}>
                     {entry.name} - {entry.amount}
                   </li>
@@ -238,14 +272,13 @@ const IncomeEntry = () => {
           </select>
         )}
         <div className="form-buttons">
+          {isEditMode && <button type="button" onClick={handleDelete}>Delete</button>}
           <button type="button" onClick={handleCancel}>Cancel</button>
           <button type="submit">{isEditMode ? 'Update Entry' : 'Submit'}</button>
         </div>
       </form>
 
-      {message && (
-        <p className={`message ${messageType}`}>{message}</p>
-      )}
+      {message && <p className={`message ${messageType}`}>{message}</p>}
     </div>
   );
 };

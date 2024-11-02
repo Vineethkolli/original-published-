@@ -1,6 +1,5 @@
 const Income = require('../models/Income');
 
-// Create a new income entry
 const createIncomeEntry = async (req, res) => {
     const { name, email, phoneNumber, amount, category, status, paymentMode } = req.body;
 
@@ -36,6 +35,7 @@ const createIncomeEntry = async (req, res) => {
         res.status(500).json({ message: 'Error creating income entry.' });
     }
 };
+
 
 // Update an existing income entry
 const updateIncomeEntry = async (req, res) => {
@@ -95,9 +95,28 @@ const getAllIncomeEntries = async (req, res) => {
     }
 };
 
+// Delete an income entry by ID
+const deleteIncomeEntry = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const deletedEntry = await Income.findByIdAndDelete(id);
+
+        if (!deletedEntry) {
+            return res.status(404).json({ message: 'Income entry not found.' });
+        }
+
+        res.json({ message: 'Income entry deleted successfully.', deletedEntry });
+    } catch (error) {
+        console.error('Error deleting income entry:', error);
+        res.status(500).json({ message: 'Error deleting income entry.' });
+    }
+};
+
 module.exports = {
     createIncomeEntry,
     getAllIncomeEntries,
     updateIncomeEntry,
     searchIncomeEntries,
+    deleteIncomeEntry
 };

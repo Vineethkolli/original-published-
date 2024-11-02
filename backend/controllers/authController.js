@@ -17,16 +17,21 @@ const signup = async (req, res) => {
             return res.status(400).json({ message: 'User already exists' });
         }
 
+        // Generate the next registerId
+        const lastUser = await User.findOne().sort({ registerId: -1 });
+        const nextId = lastUser ? (parseInt(lastUser.registerId) + 1).toString().padStart(2, '0') : '00';
+
         const hashedPassword = await bcrypt.hash(password, 10);
         const userRole = role || 'user';
-        const user = new User({ name, email, phoneNumber, password: hashedPassword, role: userRole });
+        const user = new User({ name, email, phoneNumber, password: hashedPassword, role: userRole, registerId: nextId });
         await user.save();
 
-        res.status(201).json({ message: 'User created successfully' });
+        res.status(201).json({ message: 'User created successfully', registerId: user.registerId });
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
     }
 };
+
 
 // Signin
 const signin = async (req, res) => {
@@ -40,7 +45,7 @@ const signin = async (req, res) => {
             return res.status(403).json({ message: 'Unauthorized: Role mismatch' });
         }
         const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.json({ token, user: { name: user.name, email: user.email, phoneNumber: user.phoneNumber, role: user.role } });
+        res.json({ token, user: { name: user.name, email: user.email, phoneNumber: user.phoneNumber, role: user.role, registerId: user.registerId } });
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
     }
