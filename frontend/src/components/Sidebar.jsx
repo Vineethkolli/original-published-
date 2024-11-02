@@ -10,6 +10,10 @@ function Sidebar({ isOpen, onClose, userRole }) {
                 <li>
                     <Link to="/profile" onClick={onClose}>Profile</Link>
                 </li>
+                <li>
+                    <Link to="/incomedata" onClick={onClose}>Income Data</Link>
+                </li>
+
                 {/* Render the Users link only if the user has the 'developer' role */}
                 {userRole === 'developer' && (
                     <li>
